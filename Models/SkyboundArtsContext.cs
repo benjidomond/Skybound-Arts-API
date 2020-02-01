@@ -1,18 +1,21 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.Extensions.Configuration;
 
 namespace buttoncheckDevAPI.Models
 {
     public partial class SkyboundArtsContext : DbContext
     {
+        public IConfiguration Configuration { get; }
         public SkyboundArtsContext()
         {
         }
 
-        public SkyboundArtsContext(DbContextOptions<SkyboundArtsContext> options)
+        public SkyboundArtsContext(DbContextOptions<SkyboundArtsContext> options, IConfiguration configuration)
             : base(options)
         {
+            Configuration = configuration;
         }
 
         public virtual DbSet<Characters> Characters { get; set; }
@@ -26,8 +29,7 @@ namespace buttoncheckDevAPI.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer("Server=(localDB)\\MSSQLLocalDB;Database=SkyboundArts;Trusted_Connection=True;MultipleActiveResultSets=True;");
+                optionsBuilder.UseSqlServer(Configuration["Data:ConnectionString"]);
             }
         }
 
