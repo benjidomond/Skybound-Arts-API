@@ -108,7 +108,6 @@ namespace buttoncheckDevAPI.Controllers
             return _context.Videos.Where(v => v.WinnerCharacter.Contains(winnerCharacter) & v.WinnerPlayer.Contains(winnerPlayer)).ToList();
         }
         */
-        //stacking API calls?!? hmm...
         //Search API command
         [HttpGet("search/{playerName?}/{characterName?}/{eventName?}")]
         public ActionResult<IEnumerable<Videos>> SearchVideos(string playerName = null, string characterName = null, string eventName = null)
