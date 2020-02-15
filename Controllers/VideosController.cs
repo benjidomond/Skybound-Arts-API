@@ -110,7 +110,7 @@ namespace buttoncheckDevAPI.Controllers
         */
         //Search API command
         [HttpGet("search/{playerName?}/{characterName?}/{eventName?}")]
-        public ActionResult<IEnumerable<Videos>> SearchVideos(string playerName = null, string characterName = null, string eventName = null)
+        public ActionResult<IEnumerable<Videos>> SearchVideos([FromQuery]string playerName = null, [FromQuery]string characterName = null, [FromQuery]string eventName = null)
         {
             //represents a single video in the database
             var videoItem = from video in _context.Videos select video;
