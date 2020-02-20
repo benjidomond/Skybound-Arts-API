@@ -30,7 +30,7 @@ namespace buttoncheckDevAPI
                 options.AddPolicy(MyAllowSpecificOrigins,
                 builder =>
                 {
-                    builder.WithOrigins("http://localhost:3000", "http://skyboundarts.com", "http://www.skyboundarts.com", "https://8x02d.csb.app/").AllowAnyHeader().AllowAnyMethod();
+                    builder.WithOrigins("http://localhost:3000", "http://skyboundarts.com", "http://www.skyboundarts.com", "https://8x02d.csb.app/", "http://localhost:6000/").AllowAnyHeader().AllowAnyMethod();
                 });
             });
         }
