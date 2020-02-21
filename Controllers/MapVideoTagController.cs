@@ -17,7 +17,11 @@ namespace buttoncheckDevAPI.Controllers
             _context = context;
         }
         //Get all tags
-
+        [HttpGet]
+        public ActionResult<IEnumerable<MapVideoTag>> GetAllMapTags()
+        {
+            return _context.MapVideoTag;
+        }
         //Get single tag association
         [HttpGet("{id}", Name = "GetMapTag")]
         public ActionResult<MapVideoTag> GetMapTag(int id)
@@ -48,6 +52,22 @@ namespace buttoncheckDevAPI.Controllers
             if (!String.IsNullOrEmpty(searchTagID))
             {
                 mappedTagItem = mappedTagItem.Where(v => v.TagId == parseTagID);
+            }
+            return mappedTagItem.ToList();
+        }
+        [HttpGet("findVideo/{searchTagID?}/{searchVideoIDs?}")]
+        public ActionResult<IEnumerable<MapVideoTag>> FindVideoTags([FromQuery]int[] searchVideoIDs, [FromQuery]string searchTagID = null)
+        {
+            //this item will be used to access the mapped tags
+            var mappedTagItem = from mappedtag in _context.MapVideoTag select mappedtag;
+            var parseTagID = int.Parse(searchTagID);
+            if (!String.IsNullOrEmpty(searchTagID))
+            {
+                mappedTagItem = mappedTagItem.Where(t => t.TagId == parseTagID);
+                for (int i = 0; i < searchVideoIDs[i]; i++)
+                {
+                    mappedTagItem = mappedTagItem.Where(v => v.VideoId == searchVideoIDs[i]);
+                }
             }
             return mappedTagItem.ToList();
         }

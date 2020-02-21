@@ -36,29 +36,6 @@ namespace buttoncheckDevAPI.Controllers
                 return videoItem;
             }
         }
-        //Search Videos By Character
-        /*
-        [HttpGet("characters/{characterName}")]
-        public ActionResult<IEnumerable<Videos>> SearchByCharacter(string characterName)
-        {
-            return _context.Videos.Where(v => v.P1Character.Contains(characterName) || v.P2Character.Contains(characterName)).ToList();
-        }
-        */
-        //Search By Player Name
-        /*
-        [HttpGet("players/{playerName}")]
-        public ActionResult<IEnumerable<Videos>> SearchByPlayer(string playerName)
-        {
-            return _context.Videos.Where(v => v.P1Player.Contains(playerName) || v.P2Player.Contains(playerName)).ToList();
-        }
-        */
-        //Search By Event Name
-        /*
-        [HttpGet("events/{eventName}")]
-        public ActionResult<IEnumerable<Videos>> SearchByEvents(string eventName) {
-            return _context.Videos.Where(v => v.EventName.Contains(eventName)).ToList();
-        }
-        */
         //Create Video
         [HttpPost]
         public ActionResult<Videos> PostVideo(Videos newVideo)
@@ -83,31 +60,6 @@ namespace buttoncheckDevAPI.Controllers
                 return videoItem;
             }
         }
-        //TEST THE LAST 3
-        //Search By Winning Character
-        // [HttpGet("winnerCharacter/{winnerCharacter}")]
-        /*
-        public ActionResult<IEnumerable<Videos>> GetWinnerCharacter(string winnerCharacter)
-        {
-            return _context.Videos.Where(v => v.WinnerCharacter.Contains(winnerCharacter)).ToList();
-        }
-        */
-        //Search By Winning Player
-        // [HttpGet("winnerPlayer/{winnerPlayer}")]
-        /*
-        public ActionResult<IEnumerable<Videos>> GetWinnerPlayer(string winnerPlayer)
-        {
-            return _context.Videos.Where(v => v.WinnerPlayer.Contains(winnerPlayer)).ToList();
-        }
-        */
-        //Search By Winning Character & Player
-        // [HttpGet("winnerCharAndPlayer/{winnerCharacter}/{winnerPlayer}")]
-        /*
-        public ActionResult<IEnumerable<Videos>> SearchWinnerCharAndPlayer(string winnerCharacter, string winnerPlayer)
-        {
-            return _context.Videos.Where(v => v.WinnerCharacter.Contains(winnerCharacter) & v.WinnerPlayer.Contains(winnerPlayer)).ToList();
-        }
-        */
         //Search API command
         [HttpGet("search/{playerName?}/{characterName?}/{eventName?}")]
         public ActionResult<IEnumerable<Videos>> SearchVideos([FromQuery]string playerName = null, [FromQuery]string characterName = null, [FromQuery]string eventName = null)
