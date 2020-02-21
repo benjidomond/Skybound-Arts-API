@@ -56,7 +56,7 @@ namespace buttoncheckDevAPI.Controllers
             return mappedTagItem.ToList();
         }
         [HttpGet("findVideo/{searchTagID?}/{searchVideoIDs?}")]
-        public ActionResult<IEnumerable<MapVideoTag>> FindVideoTags([FromQuery]int[] searchVideoIDs, [FromQuery]string searchTagID = null)
+        public ActionResult<IEnumerable<MapVideoTag>> FindVideoTags([FromQuery]int[] searchVideoIDs, [FromQuery]string searchTagID)
         {
             //this item will be used to access the mapped tags
             var mappedTagItem = from mappedtag in _context.MapVideoTag select mappedtag;
