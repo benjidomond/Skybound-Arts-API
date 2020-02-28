@@ -56,38 +56,28 @@ namespace buttoncheckDevAPI.Controllers
             return mappedTagItem.ToList();
         }
         [HttpGet("findVideo/{searchTagID?}/{searchVideoIDs?}")]
-        public ActionResult<IEnumerable<MapVideoTag>> FindVideoTags([FromQuery]string[] searchVideoIDs, [FromQuery]string[] searchTagID)
+        public ActionResult<IEnumerable<MapVideoTag>> FindVideoTags([FromQuery]int[] searchVideoIDs, [FromQuery]int searchTagID)
         {
-            //this item will be used to access the mapped tags
-            var mappedTagItem = from mappedtag in _context.MapVideoTag select mappedtag;
             /*
-            for (int i = 0; i < searchTagID.Length; i++)
-            {
-                var parsedTag = int.Parse(searchTagID[i]);
-                if(searchTagID[i] != "")
-                {
-                    mappedTagItem = mappedTagItem.Where(v => v.TagId == parsedTag);
-                }
-                for (int x = 0; x < searchVideoIDs.Length; x++)
-                {
-                    mappedTagItem = mappedTagItem.Where(v => v.VideoId == searchVideoIDs[i]);
-                }
-            }
+             Let's try to clean this up ourselves.
+             Alright, so we have two values here - a videoID and a tagID. What this search command is supposed to do is
+             check and see if all tthe videos contain a tagID. I think it'd be best to have one tagID for this search instead of multiple,
+             due to the fact that users will be clicking on one tag at a time and the amount of queries will be smaller.
 
-            ex. video 1 and video 2
-            5 tags
-            10 iterations in total
-            */
-            /*
-             Iteration without an index - is foreach what I'm looking for?
-
-            Update - so I'm able to get the values by themselves when searching for
-            tags but I can't get values together which is unfortunate.
-            For example,
-            http://localhost:5000/api/MapVideoTag/findVideo/?searchTagID=3&searchVideoIDs=1
-            This command works when I enter in one video ID but when I enter in both
-            ID 1 and 2 it fails to return both
+            I'd have to store the current video selections in the state of the react application, which would help immensely.
+            But yeah, let's try downsizing this app to just one tag with multiple videos.
              */
+            //this item will be used to access the mapped tags
+
+            /*
+             
+            IMPORTANT CHANGES! changed searchvideoIDs to an int
+             
+             */
+            var mappedTagItem = from mappedtag in _context.MapVideoTag
+                                where searchVideoIDs.Contains(mappedtag.VideoId) && searchTagID == mappedtag.TagId
+                              select mappedtag;
+            /*
             foreach (string videoID in searchVideoIDs)
             {
                 bool verifyVideo = !String.IsNullOrEmpty(videoID);
@@ -106,6 +96,7 @@ namespace buttoncheckDevAPI.Controllers
                     }
                 }
             }
+            */
             return mappedTagItem.ToList();
         }
     }
