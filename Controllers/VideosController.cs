@@ -61,23 +61,47 @@ namespace buttoncheckDevAPI.Controllers
             }
         }
         //Search API command
-        [HttpGet("search/{playerName?}/{characterName?}/{eventName?}")]
-        public ActionResult<IEnumerable<Videos>> SearchVideos([FromQuery]string playerName = null, [FromQuery]string characterName = null, [FromQuery]string eventName = null)
+        [HttpGet("search/{videoIDs?}/{playerName?}/{characterName?}/{eventName?}")]
+        public ActionResult<IEnumerable<Videos>> SearchVideos([FromQuery]int[] videoIDs, [FromQuery]string playerName = null, [FromQuery]string characterName = null, [FromQuery]string eventName = null)
         {
-            //represents a single video in the database
-            var videoItem = from video in _context.Videos select video;
-            if (!String.IsNullOrEmpty(playerName))
+            /*
+             checks the length of the video IDs - if there is existing videoIDs, that means a search has been conducted.
+            */
+            if (videoIDs.Length > 0)
             {
-                videoItem = videoItem.Where(p => p.P1Player.Contains(playerName) || p.P2Player.Contains(playerName));
+                var videoItem = from video in _context.Videos where videoIDs.Contains(video.VideoId) select video;
+                if (!String.IsNullOrEmpty(playerName))
+                {
+                    videoItem = videoItem.Where(p => p.P1Player.Contains(playerName) || p.P2Player.Contains(playerName));
+                }
+                if (!String.IsNullOrEmpty(characterName))
+                {
+                    videoItem = videoItem.Where(c => c.P1Character.Contains(characterName) || c.P2Character.Contains(characterName));
+                }
+                if (!String.IsNullOrEmpty(eventName))
+                {
+                    videoItem = videoItem.Where(e => e.EventName.Contains(eventName));
+                }
+                return videoItem.ToList();
             }
-            if (!String.IsNullOrEmpty(characterName)) {
-                videoItem = videoItem.Where(c => c.P1Character.Contains(characterName) || c.P2Character.Contains(characterName));
-            }
-            if (!String.IsNullOrEmpty(eventName))
+            else
             {
-                videoItem = videoItem.Where(e => e.EventName.Contains(eventName));
+                //represents a single video in the database
+                var videoItem = from video in _context.Videos select video;
+                if (!String.IsNullOrEmpty(playerName))
+                {
+                    videoItem = videoItem.Where(p => p.P1Player.Contains(playerName) || p.P2Player.Contains(playerName));
+                }
+                if (!String.IsNullOrEmpty(characterName))
+                {
+                    videoItem = videoItem.Where(c => c.P1Character.Contains(characterName) || c.P2Character.Contains(characterName));
+                }
+                if (!String.IsNullOrEmpty(eventName))
+                {
+                    videoItem = videoItem.Where(e => e.EventName.Contains(eventName));
+                }
+                return videoItem.ToList();
             }
-            return videoItem.ToList();
         }
     }
 }
