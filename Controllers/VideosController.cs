@@ -22,6 +22,13 @@ namespace buttoncheckDevAPI.Controllers
         {
             return _context.Videos;
         }
+        //Getting a collection of videos
+        [HttpGet("find/{videoIDs?}")]
+        public ActionResult<IEnumerable<Videos>> GetVideoCollection([FromQuery]int[] videoIDs)
+        {
+            var videoCollection = from video in _context.Videos where videoIDs.Contains(video.VideoId) select video;
+            return videoCollection.ToList();
+        }
         //Getting ID of Video
         [HttpGet("{id}", Name = "GetVideo")]
         public ActionResult<Videos> GetVideo(int id)
