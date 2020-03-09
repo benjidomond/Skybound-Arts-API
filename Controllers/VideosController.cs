@@ -45,7 +45,7 @@ namespace buttoncheckDevAPI.Controllers
         }
         //Create Video
         [HttpPost]
-        public ActionResult<Videos> PostVideo(Videos newVideo)
+        public ActionResult<Videos> PostVideo([FromBody]Videos newVideo)
         {
             _context.Videos.Add(newVideo);
             _context.SaveChanges();
