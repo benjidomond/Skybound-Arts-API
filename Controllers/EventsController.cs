@@ -33,7 +33,7 @@ namespace buttoncheckDevAPI.Controllers
             return eventItem;
         }
         [HttpPost]
-        public ActionResult<Events> PostEvents(Events eventItem)
+        public ActionResult<Events> PostEvents([FromBody]Events eventItem)
         {
             _context.Events.Add(eventItem);
             _context.SaveChanges();

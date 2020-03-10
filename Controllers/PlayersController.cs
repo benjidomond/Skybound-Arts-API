@@ -32,7 +32,7 @@ namespace buttoncheckDevAPI.Controllers
             return playerItem;
         }
         [HttpPost]
-        public ActionResult<Players> PostPlayer(Players newPlayer)
+        public ActionResult<Players> PostPlayer([FromBody]Players newPlayer)
         {
             _context.Players.Add(newPlayer);
             _context.SaveChanges();
