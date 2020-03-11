@@ -1,10 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using buttoncheckDevAPI.Models;
 
+// The methods in this class are used to add, retrieve, and delete video / tag relations.
 namespace buttoncheckDevAPI.Controllers
 {
     [Route("api/[controller]")]
@@ -14,16 +12,17 @@ namespace buttoncheckDevAPI.Controllers
         private SkyboundArtsContext _context;
         public VideoTagsController (SkyboundArtsContext context)
         {
+            // Inserting the DBContext into this class, enabling you to access the database.
             _context = context;
         }
-        // Getting all the VideoTags
         [HttpGet]
+        //Retrieving all the video / tag pairs
         public ActionResult<IEnumerable<VideoTags>> GetAllTags()
         {
             return _context.VideoTags;
         }
-        // Get a single VideoTag
         [HttpGet("{id}", Name = "GetSingleTag")]
+        //Retrieving a single video / tag pair
         public ActionResult<VideoTags> GetSingleTag(int id)
         {
             var tagItem = _context.VideoTags.Find(id);
@@ -36,16 +35,16 @@ namespace buttoncheckDevAPI.Controllers
                 return tagItem;
             }
         }
-        //Post a VideoTag
         [HttpPost]
+        //Creating a new video / tag relation
         public ActionResult<VideoTags> PostTag(VideoTags newTag)
         {
             _context.VideoTags.Add(newTag);
             _context.SaveChanges();
             return CreatedAtAction("GetSingleTag", new { id = newTag.TagId }, newTag);
         }
-        //Delete a VideoTag
         [HttpDelete("{id}")]
+        //Removes a video / tag relation
         public ActionResult<VideoTags> DeleteTag(int id)
         {
             var tagItem = _context.VideoTags.Find(id);

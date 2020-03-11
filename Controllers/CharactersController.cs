@@ -1,10 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using buttoncheckDevAPI.Models;
 
+
+// The methods in this class are used to retrieve, modify and add characters into the database.
 namespace buttoncheckDevAPI.Controllers
 {
     [Route("api/[controller]")]
@@ -14,14 +13,17 @@ namespace buttoncheckDevAPI.Controllers
         private readonly SkyboundArtsContext _context;
         public CharactersController(SkyboundArtsContext context)
         {
+            // Inserting the DBContext into this class, enabling you to access the database
             _context = context;
         }
         [HttpGet]
+        //Retrieving all the characters
         public ActionResult<IEnumerable<Characters>> GetAllCharacters()
         {
             return _context.Characters;
         }
         [HttpGet("{id}", Name = "GetCharacter")]
+        //Retrieving individual character
         public ActionResult<Characters> GetCharacter(int id)
         {
             var characterItem = _context.Characters.Find(id);
@@ -35,6 +37,7 @@ namespace buttoncheckDevAPI.Controllers
             }
         }
         [HttpPost]
+        //Adds a character to the database
         public ActionResult<Characters> PostCharacter(Characters newCharacter)
         {
             _context.Characters.Add(newCharacter);
@@ -42,6 +45,7 @@ namespace buttoncheckDevAPI.Controllers
             return CreatedAtAction("GetCharacter", new { id = newCharacter.CharacterId }, newCharacter);
         }
         [HttpDelete("{id}")]
+        //Removes a character from the database
         public ActionResult<Characters> DeleteCharacter(int id)
         {
             var playerItem = _context.Characters.Find(id);

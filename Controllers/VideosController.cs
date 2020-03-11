@@ -2,9 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using buttoncheckDevAPI.Models;
 
+// The methods in this class are used to retrieve, delete, and add videos to the database.
 namespace buttoncheckDevAPI.Controllers
 {
     [Route("api/[controller]")]
@@ -14,23 +14,24 @@ namespace buttoncheckDevAPI.Controllers
         private readonly SkyboundArtsContext _context;
         public VideosController(SkyboundArtsContext context)
         {
+            // Inserting the DBContext into this class, enabling you to access the database.
             _context = context;
         }
-        //Load All Videos
         [HttpGet]
+        //Retrieving all the videos
         public ActionResult<IEnumerable<Videos>> GetAllVideos()
         {
             return _context.Videos;
         }
-        //Getting a collection of videos
         [HttpGet("find/{videoIDs?}")]
+        //Getting a collection of Video IDs. Used after players conduct a search and are given a set of IDs.
         public ActionResult<IEnumerable<Videos>> GetVideoCollection([FromQuery]int[] videoIDs)
         {
             var videoCollection = from video in _context.Videos where videoIDs.Contains(video.VideoId) select video;
             return videoCollection.ToList();
         }
-        //Getting ID of Video
         [HttpGet("{id}", Name = "GetVideo")]
+        //Retrieving single video
         public ActionResult<Videos> GetVideo(int id)
         {
             var videoItem = _context.Videos.Find(id);
@@ -43,16 +44,16 @@ namespace buttoncheckDevAPI.Controllers
                 return videoItem;
             }
         }
-        //Create Video
         [HttpPost]
+        //Adds a video to the database
         public ActionResult<Videos> PostVideo([FromBody]Videos newVideo)
         {
             _context.Videos.Add(newVideo);
             _context.SaveChanges();
             return CreatedAtAction("GetVideo", new { id = newVideo.VideoId }, newVideo);
         }
-        //Delete Video
         [HttpDelete("{id}")]
+        //Removes a video from the database
         public ActionResult<Videos> DeleteVideo(int id)
         {
             var videoItem = _context.Videos.Find(id);
@@ -67,8 +68,8 @@ namespace buttoncheckDevAPI.Controllers
                 return videoItem;
             }
         }
-        //Search API command
         [HttpGet("search/{videoIDs?}/{playerName?}/{characterName?}/{eventName?}")]
+        //Search API command - used when the users pass in results parameters
         public ActionResult<IEnumerable<Videos>> SearchVideos([FromQuery]int[] videoIDs, [FromQuery]string playerName = null, [FromQuery]string characterName = null, [FromQuery]string eventName = null)
         {
             /*

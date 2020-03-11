@@ -1,10 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using buttoncheckDevAPI.Models;
 
+// The methods in this class are used to retrieve, delete, and add events to the database
 namespace buttoncheckDevAPI.Controllers
 {
     [Route("api/[controller]")]
@@ -14,15 +12,17 @@ namespace buttoncheckDevAPI.Controllers
         private readonly SkyboundArtsContext _context;
         public EventsController (SkyboundArtsContext context)
         {
+            // Inserting the DBContext into this class, enabling you to access the database
             _context = context;
         }
         [HttpGet]
+        //Retrieving all the events
         public ActionResult<IEnumerable<Events>> GetAllEvents()
         {
             return _context.Events;
         }
-        //Works
         [HttpGet("{id}", Name = "GetEvent")]
+        //Retrieving individual event
         public ActionResult<Events> GetEvent(int id)
         {
             var eventItem = _context.Events.Find(id);
@@ -33,6 +33,7 @@ namespace buttoncheckDevAPI.Controllers
             return eventItem;
         }
         [HttpPost]
+        //Adds an event to the database
         public ActionResult<Events> PostEvents([FromBody]Events eventItem)
         {
             _context.Events.Add(eventItem);
@@ -43,6 +44,7 @@ namespace buttoncheckDevAPI.Controllers
             return CreatedAtAction("GetEvent", new { id = eventItem.EventId }, eventItem);
         }
         [HttpDelete("{id}")]
+        //Removes an event from the database
         public ActionResult<Events> DeleteEvent(int id)
         {
             var eventItem = _context.Events.Find(id);
